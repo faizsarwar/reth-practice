@@ -1,0 +1,95 @@
+[package]
+name = "reth-transaction-pool"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+description = "Transaction pool implementation"
+
+[lints]
+workspace = true
+
+[package.metadata.cargo-udeps.ignore]
+normal = [
+    # Used for diagrams in docs
+    "aquamarine",
+]
+
+[dependencies]
+# reth
+reth-eth-wire.workspace = true
+reth-primitives.workspace = true
+reth-provider.workspace = true
+reth-interfaces.workspace = true
+reth-tasks.workspace = true
+revm.workspace = true
+alloy-rlp.workspace = true
+reth-revm = { workspace = true, optional = true }
+
+# async/futures
+async-trait.workspace = true
+futures-util.workspace = true
+parking_lot.workspace = true
+tokio = { workspace = true, default-features = false, features = ["sync"] }
+tokio-stream.workspace = true
+
+# metrics
+reth-metrics.workspace = true
+metrics.workspace = true
+
+# misc
+aquamarine.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+schnellru.workspace = true
+serde = { workspace = true, features = ["derive", "rc"], optional = true }
+fnv = "1.0.7"
+bitflags.workspace = true
+auto_impl = "1.0"
+
+# testing
+rand = { workspace = true, optional = true }
+paste = { version = "1.0", optional = true }
+proptest = { workspace = true, optional = true }
+
+[dev-dependencies]
+reth-primitives = { workspace = true, features = ["arbitrary"] }
+reth-provider = { workspace = true, features = ["test-utils"] }
+reth-tracing.workspace = true
+paste = "1.0"
+rand = "0.8"
+proptest.workspace = true
+criterion.workspace = true
+assert_matches.workspace = true
+tempfile.workspace = true
+
+[features]
+default = ["serde"]
+serde = ["dep:serde"]
+test-utils = ["rand", "paste", "serde"]
+arbitrary = ["proptest", "reth-primitives/arbitrary"]
+optimism = [
+    "dep:reth-revm",
+    "reth-revm?/optimism",
+    "reth-primitives/optimism",
+    "reth-provider/test-utils",
+    "reth-provider/optimism",
+    "revm/optimism",
+]
+
+[[bench]]
+name = "truncate"
+required-features = ["test-utils", "arbitrary"]
+harness = false
+
+[[bench]]
+name = "reorder"
+required-features = ["test-utils", "arbitrary"]
+harness = false
+
+[[bench]]
+name = "priority"
+required-features = ["arbitrary"]
+harness = false

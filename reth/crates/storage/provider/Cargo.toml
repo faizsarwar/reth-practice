@@ -1,0 +1,67 @@
+[package]
+name = "reth-provider"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+description = "Reth storage provider."
+
+[lints]
+workspace = true
+
+[dependencies]
+# reth
+reth-primitives.workspace = true
+reth-interfaces.workspace = true
+reth-db.workspace = true
+reth-trie.workspace = true
+reth-nippy-jar.workspace = true
+reth-node-api.workspace = true
+
+revm.workspace = true
+
+# async
+tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+tokio-stream = { workspace = true, features = ["sync"] }
+
+# tracing
+tracing.workspace = true
+
+# metrics
+reth-metrics.workspace = true
+metrics.workspace = true
+
+# misc
+auto_impl = "1.0"
+itertools.workspace = true
+pin-project.workspace = true
+parking_lot.workspace = true
+dashmap = { version = "5.5", features = ["inline"] }
+strum.workspace = true
+
+# test-utils
+alloy-rlp = { workspace = true, optional = true }
+
+# parallel utils
+rayon.workspace = true
+
+[dev-dependencies]
+reth-db = { workspace = true, features = ["test-utils"] }
+reth-primitives = { workspace = true, features = ["arbitrary", "test-utils"] }
+reth-trie = { workspace = true, features = ["test-utils"] }
+reth-interfaces = { workspace = true, features = ["test-utils"] }
+
+alloy-rlp.workspace = true
+parking_lot.workspace = true
+tempfile.workspace = true
+assert_matches.workspace = true
+rand.workspace = true
+
+[features]
+test-utils = ["alloy-rlp", "reth-db/test-utils"]
+optimism = [
+  "reth-primitives/optimism",
+  "reth-interfaces/optimism"
+]

@@ -1,0 +1,41 @@
+[package]
+name = "reth-revm"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+description = "reth specific revm utilities"
+
+[lints]
+workspace = true
+
+[dependencies]
+# reth
+reth-primitives.workspace = true
+reth-interfaces.workspace = true
+reth-provider.workspace = true
+reth-consensus-common.workspace = true
+reth-node-api.workspace = true
+
+# revm
+revm.workspace = true
+revm-inspectors.workspace = true
+
+# common
+tracing.workspace = true
+
+[dev-dependencies]
+reth-trie.workspace = true
+reth-node-ethereum.workspace = true
+reth-node-optimism.workspace = true
+
+[features]
+optimism = [
+  "revm/optimism",
+  "reth-primitives/optimism",
+  "reth-consensus-common/optimism",
+  "reth-interfaces/optimism",
+]
+js-tracer = ["revm-inspectors/js-tracer"]
